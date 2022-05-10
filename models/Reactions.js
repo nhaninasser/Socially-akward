@@ -10,19 +10,25 @@ const ReactionSchema = new Schema(
         },
         reactionBody: {
             type: String,
-            required: "ENTER REACTION",
+            required: true,
             maxLength: 280
         },
         username: {
             type: String,
-            required: "USERNAME REQUIRED!",
+            required: true,
         },
         createdAt: {
             type: Date,
             default: Date.now,
             get: (createdAtVal) => dateFormat(createdAtVal),
         }
-    }
+    },
+    {
+        toJSON: {
+            getters: true,
+        },
+        id: false
+    },
 );
 
 

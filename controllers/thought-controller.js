@@ -92,7 +92,7 @@ const thoughtController = {
 
 
   addReaction({ params, body }, res) {
-    Thought.findOnAndUpdate(
+    Thought.findOneAndUpdate(
       { _id: params.thoughtId },
       { $push: { reactions: body } },
       { new: true, runValidators: true }
@@ -108,14 +108,22 @@ const thoughtController = {
   },
 
 
-  removeReaction({ params }, res) {
-    Thought.findOneAndUpdatE(
+  removeReaction({params}, res) {
+    Thought.findOneAndUpdate(
       { _id: params.thoughtId },
-      { $pull: { reaction: { reactionId: params.reactionId } } },
-      { new: true }
+      { $pull: { reactions: { reactionId: params.reactionId } } },
+      { runValidators: true, new: true }
     )
-      .then((dbUserData) => res.json(dbUserData))
-      .catch((err) => res.json(err));
+      .then((dbThoughtData) => {
+        if (!dbThoughtData) {
+          return res.status(404).json({ message: 'THOUGHT ID NOT FOUND!' });
+        }
+        res.json(dbThoughtData);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+      });
   },
 };
 

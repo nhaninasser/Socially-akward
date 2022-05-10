@@ -8,7 +8,7 @@ router.use("/thoughts", thoughtRoutes);
 
 
 router.use((req, res) => {
-    res.status(404).send("<h1>404 Error!</h1>");
+    res.status(404).send("<h1>SUPER ANNOYING ERROR!</h1>");
 })
 
 
